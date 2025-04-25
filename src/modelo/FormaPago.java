@@ -1,23 +1,20 @@
 package modelo;
 
 public class FormaPago {
-    private String metodo;
-    private boolean activo;
+    private boolean activa = true;
 
-    public FormaPago(String metodo) {
-        this.metodo = metodo;
-        this.activo = true;
+    public String mostrarEstado() {
+        return activa ? "Forma de pago activa" : "Forma de pago bloqueada";
     }
 
-    public String getMetodo() {
-        return metodo;
+    public String activar() {
+        activa = true;
+        return "Forma de pago activada.";
     }
 
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
+    public String bloquear() {
+        activa = false;
+        return "Forma de pago bloqueada.";
     }
 }
+

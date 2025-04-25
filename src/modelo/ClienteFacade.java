@@ -1,84 +1,44 @@
 package modelo;
 
-import modelo.Cliente;
-import modelo.FormaPago;
-import modelo.Pedido;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class ClienteFacade {
     private Cliente cliente;
-    private List<FormaPago> formasPago;
-    private List<Pedido> historialPedidos;
+    private Pedido pedido;
+    private FormaPago formaPago;
 
-    public ClienteFacade(Cliente cliente, List<FormaPago> formasPago, List<Pedido> historialPedidos) {
-        this.cliente = cliente;
-        this.formasPago = formasPago;
-        this.historialPedidos = historialPedidos;
+    public ClienteFacade(String nombre, String correo) {
+        this.cliente = new Cliente(nombre, correo);
+        this.pedido = new Pedido();
+        this.formaPago = new FormaPago();
     }
 
-    public String actualizarCliente(String nombre, String correo) {
-        cliente.setNombre(nombre);
-        cliente.setCorreo(correo);
-        return "Cliente actualizado: " + nombre + ", " + correo;
+    public String gestionarInformacionCliente() {
+        return cliente.mostrarInformacion();
     }
 
-    public String mostrarCliente() {
-        return "Cliente: " + cliente.getNombre() + ", Correo: " + cliente.getCorreo();
+    public String gestionarPedidos() {
+        String pedidoRealizado = pedido.realizarPedido("Arepa de queso");
+        return pedidoRealizado + "\n" + pedido.mostrarHistorial();
     }
 
-    public String realizarPedido(String descripcion) {
-        Pedido nuevoPedido = new Pedido(descripcion);
-        historialPedidos.add(nuevoPedido);
-        return "Pedido realizado: " + descripcion;
+    public String gestionarFormaPago() {
+        String estadoAntes = formaPago.mostrarEstado();
+        String bloquear = formaPago.bloquear();
+        String estadoDespues = formaPago.mostrarEstado();
+        return estadoAntes + "\n" + bloquear + "\n" + estadoDespues;
     }
 
-    public String mostrarHistorialPedido() {
-        if (historialPedidos.isEmpty()) return "No hay pedidos registrados.";
-        StringBuilder sb = new StringBuilder("Historial de pedidos:\n");
-        for (Pedido p : historialPedidos) {
-            sb.append("- ").append(p.getDescripcion()).append("\n");
-        }
-        return sb.toString();
+    // ✅ Método maestro que reúne los 3 subsistemas
+    public String gestionarTodo() {
+        return "---- Información del Cliente ----\n" +
+                gestionarInformacionCliente() + "\n\n" +
+                "---- Historial de Pedidos ----\n" +
+                gestionarPedidos() + "\n\n" +
+                "---- Forma de Pago ----\n" +
+                gestionarFormaPago();
     }
 
-    public String agregarFormaPago(String metodo) {
-        formasPago.add(new FormaPago(metodo));
-        return "Forma de pago agregada: " + metodo;
-    }
-
-    public String mostrarFormasPago() {
-        if (formasPago.isEmpty()) return "No hay formas de pago registradas.";
-        StringBuilder sb = new StringBuilder("Formas de pago:\n");
-        for (FormaPago f : formasPago) {
-            sb.append("- ").append(f.getMetodo()).append(" (Activo: ").append(f.isActivo()).append(")\n");
-        }
-        return sb.toString();
-    }
-
-    public String bloquearPago(String metodo) {
-        for (FormaPago f : formasPago) {
-            if (f.getMetodo().equalsIgnoreCase(metodo)) {
-                f.setActivo(false);
-                return "Forma de pago bloqueada: " + metodo;
-            }
-        }
-        return "Método no encontrado: " + metodo;
-    }
-
-    public String activarPago(String metodo) {
-        for (FormaPago f : formasPago) {
-            if (f.getMetodo().equalsIgnoreCase(metodo)) {
-                f.setActivo(true);
-                return "Forma de pago activada: " + metodo;
-            }
-        }
-        return "Método no encontrado: " + metodo;
-    }
-
-    public String obtenerDatosCliente() {
-        return mostrarCliente() + "\n" + mostrarFormasPago();
+    public String actualizarCliente(String nuevoNombre, String nuevoCorreo) {
+        return cliente.actualizarInformacion(nuevoNombre, nuevoCorreo);
     }
 }
 

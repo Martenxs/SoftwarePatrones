@@ -1,13 +1,19 @@
 package modelo;
 
-public class Pedido {
-    private String descripcion;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Pedido(String descripcion) {
-        this.descripcion = descripcion;
+public class Pedido {
+    private List<String> historial = new ArrayList<>();
+
+    public String mostrarHistorial() {
+        if (historial.isEmpty()) return "No hay pedidos aún.";
+        return "Historial: " + String.join(", ", historial);
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String realizarPedido(String producto) {
+        historial.add(producto);
+        return "Pedido realizado: " + producto;
     }
 }
+

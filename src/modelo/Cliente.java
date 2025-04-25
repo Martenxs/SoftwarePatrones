@@ -9,19 +9,13 @@ public class Cliente {
         this.correo = correo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String mostrarInformacion() {
+        return "Nombre: " + nombre + ", Correo: " + correo;
     }
 
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    public String actualizarInformacion(String nuevoNombre, String nuevoCorreo) {
+        this.nombre = nuevoNombre;
+        this.correo = nuevoCorreo;
+        return "Información actualizada: " + mostrarInformacion();
     }
 }
